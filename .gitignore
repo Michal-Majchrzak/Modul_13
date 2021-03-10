@@ -130,6 +130,4 @@ dmypy.json
 
 #PyCharm
 .idea/
-views/views_old.py
-
-models_old.py
+instance/
