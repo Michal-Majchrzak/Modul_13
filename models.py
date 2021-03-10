@@ -1,19 +1,39 @@
 import sqlite3
 from sqlite3 import Error
+import os
 
 
 class TodosSQLite:
     def __init__(self):
-        self.db_name = 'testbase.sqlite'
+        if not os.path.isdir('instance'):
+            os.makedirs('instance')
+        self.db_path = r"./instance/todos.sqlite"
 
     def create_connection(self):
         conn = None
         try:
-            conn = sqlite3.connect(self.db_name)
+            conn = sqlite3.connect(self.db_path)
             return conn
         except Error as error:
             print(error)
         return conn
+
+    def create_todos_table(self):
+        sql = """ CREATE TABLE IF NOT EXISTS todos (
+            "id"	INTEGER,
+            "title"	TEXT NOT NULL,
+            "description"	TEXT,
+            "done"	INTEGER NOT NULL DEFAULT 0,
+            PRIMARY KEY("id")
+            ) """
+        with self.create_connection() as conn:
+            try:
+                cur = conn.cursor()
+                cur.execute(sql)
+                return True
+            except Error as error:
+                print(error)
+        return False
 
     def select_all(self, table_name: str) -> list:
         """
@@ -124,3 +144,4 @@ class TodosSQLite:
 
 
 todos_sqlite = TodosSQLite()
+todos_sqlite.create_todos_table()
