@@ -35,4 +35,7 @@ def todo_details(todo_id):
                     data_for_db[key] = value
             todos_sqlite.update_record_by_id('todos', todo_id, **data_for_db)
         return redirect(url_for("general.todos_list"))
+
+    if not todo:
+        return redirect(url_for('general.todos_list'))
     return render_template("todo.html", form=form, todo_id=todo_id)
