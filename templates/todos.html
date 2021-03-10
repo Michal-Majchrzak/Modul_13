@@ -20,7 +20,7 @@
     <tr>
         <td><a href="/todos/{{ loop.index }}">{{ todo.title }}</a></td>
         <td>{{ todo.description }}</td>
-        <td>{{ todo.done }}</td>
+        <td>{% if todo.done %} True {%else%} False {% endif %}</td>
     </tr>
 {% endfor %}
 </table>
