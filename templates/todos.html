@@ -26,7 +26,7 @@
 </table>
 <div>
     <h2> Dodaj nowe zadanie: </h2>
-    <form method="POST" action="/todos/">
+    <form method="POST" action="/todos">
         {{ form.hidden_tag() }}
         <table>
             {% for field in form if field.widget.input_type != 'hidden' %}
