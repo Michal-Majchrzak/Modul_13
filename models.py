@@ -50,8 +50,9 @@ class TodosSQLite:
                 cur = conn.cursor()
                 cur.execute(sql, (id, ))
                 row = cur.fetchone()
-                cols_name = [item[0] for item in cur.description]
-                return dict(zip(cols_name, row))
+                if row:
+                    cols_name = [item[0] for item in cur.description]
+                    return dict(zip(cols_name, row))
             except Error as error:
                 print(error)
             return {}
@@ -101,6 +102,25 @@ class TodosSQLite:
                 conn.commit()
             except Error as error:
                 print(error)
+
+    def delete_record_by_id(self, table_name: str, id: int):
+        """
+        Delete record in table [table_name] with chosen ID
+        :param table_name: table in database
+        :param id: record ID
+        :return: Ture if any records were deleted, else return False
+        """
+        sql = f"""DELETE FROM {table_name} WHERE id = ?"""
+        with self.create_connection() as conn:
+            try:
+                cur = conn.cursor()
+                cur.execute(sql, (id, ))
+                conn.commit()
+                if cur.rowcount >= 1:
+                    return True
+            except Error as error:
+                print(error)
+        return False
 
 
 todos_sqlite = TodosSQLite()
