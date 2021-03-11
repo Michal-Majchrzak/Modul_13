@@ -2,7 +2,36 @@
 {% block header %}<title>Manage Readers</title>{% endblock %}
 
 {% block content %}
+<!-- READERS LIST TABLE -->
+{% if readers_list %}
+<table>
+    <thead>
+    <th>ID</th>
+    <th>Imie</th>
+    <th>Nazwisko</th>
+    </thead>
 {% for reader in readers_list %}
-<p>{{ reader.name }} {{ reader.lastname}}</p>
+    <tr>
+        <td>{{ reader.id }}</td>
+        <td><a href="{{ url_for('readers.render_update_reader', reader_id=reader.id) }}">{{ reader.name }}</a></td>
+        <td>{{ reader.lastname }}</td>
+    </tr>
 {% endfor %}
+</table>
+{% endif %}
+<!-- END READERS LIST -->
+
+<!-- ADD READER FORM -->
+{% if form %}
+<form action="{{ url_for('readers.add_reader_to_db') }}" method="post">
+    {{ form.hidden_tag() }}
+        {% for field in form if field.widget.input_type != 'hidden' %}
+            {% if field.widget.input_type != 'submit' %}
+                {{ field.label(class_="one") }}
+            {% endif %}
+            {{ field(class_="two") }}
+        {% endfor %}
+</form>
+{% endif %}
+<!-- END ADD READER -->
 {% endblock %}
