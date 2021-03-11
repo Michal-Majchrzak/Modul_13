@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, redirect, url_for
+from flask import Blueprint, request, render_template, redirect, url_for, abort
 from forms import TodoForm
 from models import todos_sqlite
 
@@ -8,7 +8,7 @@ general = Blueprint('general', __name__, url_prefix='/todos')
 @general.route('/', methods=['GET', 'POST'])
 def todos_list():
     form = TodoForm()
-    error = ""
+    error = request.args.get('error', "")
     if request.method == "POST":
         if form.validate_on_submit():
             data_for_db = {}
@@ -39,3 +39,11 @@ def todo_details(todo_id):
     if not todo:
         return redirect(url_for('general.todos_list'))
     return render_template("todo.html", form=form, todo_id=todo_id)
+
+
+@general.route("/delete/<int:todo_id>", methods=['GET'])
+def delete_todo(todo_id):
+    result = todos_sqlite.delete_record_by_id('todos', todo_id)
+    if not result:
+        return redirect(url_for("general.todos_list", error=f"Chosen ToDo ID : [{todo_id}] dosen't exist."))
+    return redirect(url_for("general.todos_list"))
