@@ -25,3 +25,9 @@ class UpdateBook(FlaskForm):
     title = StringField("Tytuł", validators=[DataRequired()])
     genre = StringField("Gatunek", validators=[DataRequired()])
     button = SubmitField("Zaktualizuj")
+
+
+class AddAuthor(FlaskForm):
+    name = StringField("Imię", validators=[DataRequired()])
+    lastname = StringField("Nazwisko", validators=[DataRequired()])
+    button = SubmitField("Dodaj")

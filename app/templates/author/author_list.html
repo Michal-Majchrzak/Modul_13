@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+{% block header %}<title>Manage Authors</title>{% endblock %}
+
+{% block content %}
+<!--  LIST TABLE -->
+{% if authors_list %}
+<table>
+    <thead>
+    <th>ID</th>
+    <th>Imię</th>
+    <th>Nazwisko</th>
+    </thead>
+{% for author in authors_list %}
+    <tr>
+        <td>{{ author.id }}</td>
+        <td><a href="{{ url_for('authors.render_update_author', author_id=author.id) }}">{{ author.name }}</a></td>
+        <td>{{ author.lastname }}</td>
+    </tr>
+{% endfor %}
+</table>
+{% endif %}
+<!-- END LIST -->
+{% endblock %}
