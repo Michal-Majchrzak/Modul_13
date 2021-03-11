@@ -4,3 +4,4 @@ flask-migrate
 flask-shell-ipython
 flask-wtf
 python-dotenv
+wtforms
