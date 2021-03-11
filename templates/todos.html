@@ -9,18 +9,22 @@
 </head>
 
 <h2>Lista zadań</h2>
-
+{% if error %}
+<div><p style="color:red">{{ error }}</p></div>
+{% endif %}
 <table>
     <thead>
     <th>Tytuł</th>
     <th>Opis</th>
     <th>Czy zrobione?</th>
+    <th>Opcje</th>
     </thead>
 {% for todo in todos %}
     <tr>
         <td><a href="/todos/{{ todo.id }}">{{ todo.title }}</a></td>
         <td>{{ todo.description }}</td>
         <td>{% if todo.done %} True {%else%} False {% endif %}</td>
+        <td><a href="/todos/delete/{{ todo.id}}"><b>Usuń</b></a></td>
     </tr>
 {% endfor %}
 </table>
