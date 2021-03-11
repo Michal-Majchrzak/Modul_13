@@ -25,3 +25,24 @@ class Book(db.Model):
 
     def __str__(self):
         return f"<Book: {self.title[:50]} ..>"
+
+
+class Reader(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20), index=True)
+    lastname = db.Column(db.String(20), index=True)
+    borrowed = db.relationship("InventoryUnit", backref="last_reader", lazy="dynamic")
+
+    def __str__(self):
+        return f"<Reader: {self.name} {self.lastname}>"
+
+
+class InventoryUnit(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
+    reader_id = db.Column(db.Integer, db.ForeignKey('reader.id'))
+    is_available = db.Column(db.Boolean)
+    last_borrow_date = db.Column(db.DateTime, index=True)
+
+    def __str__(self):
+        return f"<InventoryUnit id[{self.id}] : Available: {self.is_available}>"
