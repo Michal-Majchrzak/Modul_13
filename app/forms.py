@@ -7,3 +7,9 @@ class AddReader(FlaskForm):
     name = StringField("Imię", validators=[DataRequired()])
     lastname = StringField("Nazwisko", validators=[DataRequired()])
     button = SubmitField("Dodaj")
+
+
+class UpdateReader(FlaskForm):
+    name = StringField("Imię", validators=[DataRequired()])
+    lastname = StringField("Nazwisko", validators=[DataRequired()])
+    button = SubmitField("Zaktualizuj")
