@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+{% block header %}<title>Manage Books</title>{% endblock %}
+
+{% block content %}
+<!--  LIST TABLE -->
+{% if books_list %}
+<table>
+    <thead>
+    <th>ID</th>
+    <th>Tytuł</th>
+    <th>Gatunek</th>
+    </thead>
+{% for book in books_list %}
+    <tr>
+        <td>{{ book.id }}</td>
+        <td><a href="{{ url_for('books.render_update_book', book_id=book.id) }}">{{ book.title }}</a></td>
+        <td>{{ book.genre }}</td>
+    </tr>
+{% endfor %}
+</table>
+{% endif %}
+<!-- END LIST -->
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+{% block header %}<title>Manage Books</title>{% endblock %}
+
+{% block content %}
+<!-- ADD  FORM -->
+{% if form %}
+<form action="{{ url_for('books.update_book_to_db', book_id=book_id) }}" method="post">
+    {{ form.hidden_tag() }}
+        {% for field in form if field.widget.input_type != 'hidden' %}
+            {% if field.widget.input_type != 'submit' %}
+                {{ field.label }}
+            {% endif %}
+                {{ field }}
+        {% endfor %}
+</form>
+{% endif %}
+<!-- END ADD  -->
+{% endblock %}

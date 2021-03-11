@@ -14,6 +14,21 @@
         <li><a href="{{ url_for('readers.render_readers_list') }}">Readers list</a></li>
         <li><a href="{{ url_for('readers.render_add_reader') }}">Add reader</a></li>
     </ul>
+    <h4>Manage Books</h4>
+    <ul>
+        <li><a href="{{ url_for('books.render_books_list') }}">Books list</a></li>
+        <li><a href="{{ url_for('books.render_add_book') }}">Add book</a></li>
+    </ul>
+    <h4>Manage Authors</h4>
+    <ul>
+        <li>Authors list</li>
+        <li>Add author</li>
+    </ul>
+    <h4>Manage Inventory</h4>
+    <ul>
+        <li>View items</li>
+        <li>Add item</li>
+    </ul>
 </div>
 <div class="content">
     {% block content %}{% endblock%}
