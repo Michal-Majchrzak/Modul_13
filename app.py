@@ -6,10 +6,11 @@ import os
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py', silent=True)
 
-try:
-    os.makedirs(app.instance_path)
-except OSError as error:
-    print(error)
+if not os.path.isdir('instance'):
+    try:
+        os.makedirs(app.instance_path)
+    except OSError as error:
+        print(error)
 
 app.register_blueprint(views.general)
 app.register_blueprint(api.api)
