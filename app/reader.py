@@ -1,7 +1,7 @@
 from flask import render_template, Blueprint, request, redirect, url_for
 from app import db
 from app.models import Reader
-from app.forms import AddReader
+from app.forms import AddReader, UpdateReader
 
 readers = Blueprint('readers', __name__, url_prefix='/readers')
 
@@ -27,6 +27,29 @@ def add_reader_to_db():
                 name=request.form.get('name'),
                 lastname=request.form.get('lastname')
             )
+            db.session.add(reader)
+            db.session.commit()
+            return redirect(url_for('readers.render_readers_list'))
+
+
+@readers.route('/update/<int:reader_id>', methods=['GET'])
+def render_update_reader(reader_id: int):
+    reader = Reader.query.get(reader_id)
+    form = UpdateReader(data={
+        'name': reader.name,
+        'lastname': reader.lastname
+    })
+    return render_template('/reader/update_reader.html', form=form, reader_id=reader_id)
+
+
+@readers.route('/update/<int:reader_id>', methods=['POST'])
+def update_reader_to_db(reader_id: int):
+    form = UpdateReader()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            reader = Reader.query.get(reader_id)
+            reader.name = request.form.get('name')
+            reader.lastname = request.form.get('lastname')
             db.session.add(reader)
             db.session.commit()
             return redirect(url_for('readers.render_readers_list'))
