@@ -1,9 +1,9 @@
 from app import db
 
 
-book_details = db.Table('book_details',
-                        db.Column('book_id', db.Integer, db.ForeignKey('book.id'), primary_key=True),
-                        db.Column('author_id', db.Integer, db.ForeignKey('author.id'), primary_key=True)
+book_author = db.Table('book_author',
+                        db.Column('book_id', db.Integer, db.ForeignKey('book.id')),
+                        db.Column('author_id', db.Integer, db.ForeignKey('author.id'))
                         )
 
 
@@ -11,8 +11,9 @@ class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), index=True)
     lastname = db.Column(db.String(20), index=True)
-    books = db.relationship('Book', secondary=book_details, lazy='subquery',
-                            backref=db.backref('authors', lazy=True))
+    books = db.relationship('Book',
+                            secondary=book_author,
+                            back_populates="authors")
 
     def __str__(self):
         return f"<Author: {self.name} {self.lastname}>"
@@ -22,6 +23,9 @@ class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), index=True)
     genre = db.Column(db.String(20), index=True)
+    authors = db.relationship('Author',
+                              secondary=book_author,
+                              back_populates='books')
 
     def __str__(self):
         return f"<Book: {self.title[:50]} ..>"
