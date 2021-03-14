@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from app import db
-from app.models import Author
-from app.forms import AddAuthor
+from app.models import Author, Book
+from app.forms import AddAuthor, books_list_form_builder
 
 authors = Blueprint('authors', __name__, url_prefix='/authors')
 
@@ -29,7 +29,8 @@ def add_author_to_db():
             )
             db.session.add(author)
             db.session.commit()
-            return redirect(url_for('authors.render_authors_list'))
+
+    return redirect(url_for('authors.render_authors_list'))
 
 
 @authors.route('/update/<int:author_id>', methods=['GET'])
@@ -54,3 +55,57 @@ def update_author_to_db(author_id: int):
             db.session.add(author)
             db.session.commit()
             return redirect(url_for('authors.render_authors_list'))
+
+
+@authors.route('/<int:author_id>/details', methods=['GET'])
+def render_author_details(author_id: int):
+    author = Author.query.get(author_id)
+    return render_template('author/author_list.html', author=author)
+
+
+@authors.route('/<int:author_id>/delete', methods=['GET'])
+def delete_author_by_id(author_id: int):
+    author = Author.query.get(author_id)
+    if not author:
+        print(f"Autor o numerze id [{author_id}] nie został usunięty. Prownodowobnie nie istnieje.")
+        return redirect(url_for('authors.render_authors_list'))
+    else:
+        author.books = []
+        db.session.delete(author)
+        db.session.commit()
+    return redirect(url_for('authors.render_authors_list'))
+
+
+@authors.route('/<int:author_id>/books', methods=['GET'])
+def render_books_list_for_author(author_id: int):
+    books = Book.query.all()
+    author = Author.query.get(author_id)
+    books_ids = [book.id for book in author.books]
+    form = books_list_form_builder(books, books_ids)
+    return render_template('author/attach_book_to_author.html', form=form, author_id=author_id)
+
+
+@authors.route('/<int:author_id>/books', methods=['POST'])
+def update_books_list_for_author(author_id: int):
+    books = Book.query.all()
+    form = books_list_form_builder(books, books_ids=[])
+
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            books_ids = select_values_with_key_prefix('book_', request.form)
+            author = Author.query.get(author_id)
+            author.books = []
+            for book_id in books_ids:
+                book = Book.query.get(book_id)
+                author.books.append(book)
+            db.session.commit()
+
+    return redirect(url_for('authors.render_author_details', author_id=author_id))
+
+
+def select_values_with_key_prefix(key_prefix: str, dictionary) -> list:
+    result_list = []
+    for key, value in dictionary.items():
+        if key[:len(key_prefix)] == key_prefix:
+            result_list.append(value)
+    return result_list
