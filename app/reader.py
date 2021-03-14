@@ -53,3 +53,11 @@ def update_reader_to_db(reader_id: int):
             db.session.add(reader)
             db.session.commit()
             return redirect(url_for('readers.render_readers_list'))
+
+
+@readers.route('/<int:reader_id>/delete', methods=['GET'])
+def delete_reader_by_id(reader_id: int):
+    reader = Reader.query.get_or_404(reader_id)
+    db.session.delete(reader)
+    db.session.commit()
+    return redirect(url_for('readers.render_readers_list'))

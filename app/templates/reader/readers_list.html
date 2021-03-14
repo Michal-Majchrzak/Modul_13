@@ -9,12 +9,14 @@
     <th>ID</th>
     <th>Imie</th>
     <th>Nazwisko</th>
+    <th></th>
     </thead>
 {% for reader in readers_list %}
     <tr>
         <td>{{ reader.id }}</td>
-        <td><a href="{{ url_for('readers.render_update_reader', reader_id=reader.id) }}">{{ reader.name }}</a></td>
+        <td><a href="{{ url_for('readers.render_update_reader', reader_id=reader.id) }}" title="Edytuj {{ reader.name }}">{{ reader.name }}</a></td>
         <td>{{ reader.lastname }}</td>
+        <td><a href="{{ url_for('readers.delete_reader_by_id', reader_id=reader.id) }}">Usuń</a></td>
     </tr>
 {% endfor %}
 </table>
