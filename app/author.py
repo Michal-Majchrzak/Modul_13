@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from app import db
 from app.models import Author, Book
-from app.forms import AddAuthor, books_list_form_builder
+from app.forms import AddAuthor, books_list_form_builder, select_values_by_key_prefix
 
 authors = Blueprint('authors', __name__, url_prefix='/authors')
 
@@ -92,7 +92,10 @@ def update_books_list_for_author(author_id: int):
 
     if request.method == 'POST':
         if form.validate_on_submit():
-            books_ids = select_values_with_key_prefix('book_', request.form)
+            books_ids = select_values_by_key_prefix(
+                key_prefix='book_',
+                dictionary=request.form
+            )
             author = Author.query.get(author_id)
             author.books = []
             for book_id in books_ids:
@@ -103,9 +106,3 @@ def update_books_list_for_author(author_id: int):
     return redirect(url_for('authors.render_author_details', author_id=author_id))
 
 
-def select_values_with_key_prefix(key_prefix: str, dictionary) -> list:
-    result_list = []
-    for key, value in dictionary.items():
-        if key[:len(key_prefix)] == key_prefix:
-            result_list.append(value)
-    return result_list

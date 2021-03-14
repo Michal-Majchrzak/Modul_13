@@ -44,6 +44,30 @@ def books_list_form_builder(books, books_ids):
                 'checked': True
             }))
         else:
-            setattr(BooksListForm, f"book_{index}", BooleanField(label=book.title, render_kw={'value': book.id,}))
+            setattr(BooksListForm, f"book_{index}", BooleanField(label=book.title, render_kw={'value': book.id}))
     setattr(BooksListForm, 'button', SubmitField('Przypisz'))
     return BooksListForm()
+
+
+def authors_list_form_builder(authors, authors_ids):
+    class AuthorsListForm(FlaskForm):
+        pass
+
+    for index, author in enumerate(authors):
+        if author.id in authors_ids:
+            setattr(AuthorsListForm, f"auth_{index}", BooleanField(label=str(author), render_kw={
+                'value': author.id,
+                'checked': True
+            }))
+        else:
+            setattr(AuthorsListForm, f"auth_{index}", BooleanField(label=str(author), render_kw={'value': author.id}))
+    setattr(AuthorsListForm, 'button', SubmitField('Przypisz'))
+    return AuthorsListForm()
+
+
+def select_values_by_key_prefix(key_prefix: str, dictionary) -> list:
+    result_list = []
+    for key, value in dictionary.items():
+        if key[:len(key_prefix)] == key_prefix:
+            result_list.append(value)
+    return result_list
