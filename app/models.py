@@ -16,7 +16,7 @@ class Author(db.Model):
                             back_populates="authors")
 
     def __str__(self):
-        return f"<Author: {self.name} {self.lastname}>"
+        return f"{self.name} {self.lastname}"
 
 
 class Book(db.Model):
