@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from app import db
-from app.models import Book, Author
+from app.models import Book, Author, InventoryItem
 from app.forms import AddBook, UpdateBook, authors_list_form_builder, select_values_by_key_prefix
 
 books = Blueprint('books', __name__, url_prefix='/books')
@@ -62,6 +62,10 @@ def delete_book_by_id(book_id: int):
         print(f"Książka o numerze id [{book_id}] nie został usunięty. Prownodowobnie nie istnieje.")
         return redirect(url_for('books.render_books_list'))
     else:
+        inv_items = InventoryItem.query.filter(InventoryItem.book_id == book.id).all()
+        for item in inv_items:
+            db.session.delete(item)
+
         book.authors = []
         db.session.delete(book)
         db.session.commit()
