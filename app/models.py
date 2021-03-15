@@ -48,4 +48,4 @@ class InventoryItem(db.Model):
     reader_id = db.Column(db.Integer, db.ForeignKey('reader.id'))
 
     def __str__(self):
-        return f""
+        return f"<Item: {self.id} {self.book_id} {self.reader_id}>"
