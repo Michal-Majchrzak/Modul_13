@@ -1,5 +1,5 @@
 from app import app, db
-from app.models import Book, Author, Reader, InventoryUnit
+from app.models import Book, Author, Reader, InventoryItem
 
 
 @app.shell_context_processor
@@ -9,5 +9,5 @@ def make_shell_context():
         "Book": Book,
         "Author": Author,
         "Reader": Reader,
-        "InventoryUnit": InventoryUnit
+        "InventoryItem": InventoryItem
     }
