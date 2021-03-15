@@ -8,5 +8,5 @@
 ### 3. Install app dependencies `pip install -r requirements.txt`
 ### 4. Set environment variable with `SECRET KEY` using ` export SECRET_KEY='key-goes-here'`
 ### 5. Run flask with `flask run` command
-### 6. App should now be working on address `http://localhost:5000/todos`
+### 6. App should now be working on address `http://localhost:5000/`
 
