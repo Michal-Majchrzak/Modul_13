@@ -22,6 +22,8 @@
     </tr>
 {% endfor %}
 </table>
+{% elif authors_list and author %}
+<p><i>Brak dodanych autorów.</i></p>
 {% endif %}
 {% if author %}
 <h4><i>Autor: </i>{{ author.name }} {{ author.lastname }}</h4>
