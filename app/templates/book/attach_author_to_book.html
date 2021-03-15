@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+{% block header %}<title>Manage Books</title>{% endblock %}
+{% block content %}
+{% if form %}
+<form action="{{ url_for('books.render_form_authors_for_book', book_id=book_id) }}" method="post">
+    {{ form.hidden_tag() }}
+    {% for field in form if field.widget.input_type != 'hidden' %}
+        {{ field }}
+        {% if field.widget.input_type != 'submit' %}
+            {{ field.label }}
+        {% endif %}
+        <br>
+    {% endfor %}
+</form>
+{% endif %}
+{% endblock %}

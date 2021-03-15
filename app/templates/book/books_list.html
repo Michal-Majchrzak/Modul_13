@@ -1,0 +1,43 @@
+{% extends 'index.html' %}
+{% block header %}<title>Manage Books</title>{% endblock %}
+
+{% block content %}
+<!--  LIST TABLE -->
+{% if books_list %}
+<table>
+    <thead>
+    <th>ID</th>
+    <th>Tytuł</th>
+    <th>Gatunek</th>
+    <th>Autorzy</th>
+    <th></th>
+    </thead>
+{% for book in books_list %}
+    <tr>
+        <td>{{ book.id }}</td>
+        <td><a href="{{ url_for('books.render_update_book', book_id=book.id) }}">{{ book.title }}</a></td>
+        <td>{{ book.genre }}</td>
+        <td><a href="{{ url_for('books.render_book_details', book_id=book.id) }}">Wyświetl</a></td>
+        <td><a href="{{ url_for('books.delete_book_by_id', book_id=book.id) }}">Usuń</a></td>
+    </tr>
+{% endfor %}
+</table>
+{% elif books_list and book %}
+<p><i>Brak dodanych książek</i></p>
+{% endif %}
+<!-- END LIST -->
+{% if book %}
+<h4><i>Tytuł: </i>{{ book.title }}</h4>
+<h4><i>Autorzy: </i><a href="{{ url_for('books.render_form_authors_for_book', book_id=book.id) }}">Dodaj/Usuń autorów</a></h4>
+
+<ul>
+    {% if book.authors|length <= 0 %}
+        <li><i>Brak dodanych autorów</i></li>
+    {% else %}
+    {% for author in book.authors %}
+    <li>{{ [author.name, author.lastname]|join(' ') }}</li>
+    {% endfor %}
+    {% endif %}
+</ul>
+{% endif %}
+{% endblock %}

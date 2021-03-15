@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block header %}{% endblock %}
+    <style>
+        table, th, tr, td {border: 1px solid black;}
+    </style>
+</head>
+<body>
+<div class="nav">
+    <h4>Manage Readers</h4>
+    <ul>
+        <li><a href="{{ url_for('readers.render_readers_list') }}">Readers list</a></li>
+        <li><a href="{{ url_for('readers.render_add_reader') }}">Add reader</a></li>
+    </ul>
+    <h4>Manage Books</h4>
+    <ul>
+        <li><a href="{{ url_for('books.render_books_list') }}">Books list</a></li>
+        <li><a href="{{ url_for('books.render_add_book') }}">Add book</a></li>
+    </ul>
+    <h4>Manage Authors</h4>
+    <ul>
+        <li><a href="{{ url_for('authors.render_authors_list') }}">Authors list</a></li>
+        <li><a href="{{ url_for('authors.render_add_author') }}">Add author</a></li>
+    </ul>
+    <h4>Manage Inventory</h4>
+    <ul>
+        <li><a href="{{ url_for('inventory.render_inventory_list') }}">View items</a></li>
+        <li><a href="{{ url_for('inventory.render_add_inventory_form') }}">Add item</a></li>
+    </ul>
+</div>
+<div class="content">
+    {% block content %}{% endblock%}
+</div>
+</body>
+</html>

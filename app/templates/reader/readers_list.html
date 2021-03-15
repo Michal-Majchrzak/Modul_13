@@ -1,0 +1,48 @@
+{% extends 'index.html' %}
+{% block header %}<title>Manage Readers</title>{% endblock %}
+
+{% block content %}
+{% if readers_list %}
+<table>
+    <thead>
+    <th>ID</th>
+    <th>Imie</th>
+    <th>Nazwisko</th>
+    <th>Książki</th>
+    <th></th>
+    </thead>
+    {% for reader in readers_list %}
+    <tr>
+        <td>{{ reader.id }}</td>
+        <td><a href="{{ url_for('readers.render_update_reader', reader_id=reader.id) }}" title="Edytuj {{ reader.name }}">{{ reader.name }}</a></td>
+        <td>{{ reader.lastname }}</td>
+        <td><a href="{{ url_for('readers.render_reader_details', reader_id=reader.id) }}" title="Lista wypożyczonych pozycji">Wyświetl</a></td>
+        <td><a href="{{ url_for('readers.delete_reader_by_id', reader_id=reader.id) }}">Usuń</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% elif readers_list and reader %}
+<p><i>Brak dodanych czytelników</i></p>
+{% endif %}
+{% if reader %}
+<h4>Czytelnik: <i>{{ [reader.name, reader.lastname]|join(' ') }}</i></h4>
+    {% if reader.borrowed_books %}
+    <table>
+        <thead>
+            <th>ID</th>
+            <th>Tytuł</th>
+            <th></th>
+        </thead>
+        {% for item in reader.borrowed_books %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.book.title }}</td>
+            <td><a href="{{ url_for('readers.return_item_to_inventory', reader_id=reader.id, item_id=item.id) }}">Oddaj</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p><i>Brak wypożyczonych książek</i></p>
+    {% endif %}
+{% endif %}
+{% endblock %}

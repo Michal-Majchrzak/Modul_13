@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+{% block header %}<title>Manage Inventory</title>{% endblock %}
+{% block content %}
+<p>Dodaj egzemplarz książki do biblioteki.</p>
+{% if form %}
+<form action="{{ url_for('inventory.add_selected_book_to_inventory') }}" method="post">
+    {{ form.hidden_tag() }}
+        {% for field in form if field.widget.input_type != 'hidden' %}
+            {% if field.widget.input_type != 'submit' %}
+                {{ field.label }}
+            {% endif %}
+                {{ field }}
+        {% endfor %}
+</form>
+{% endif %}
+{% endblock %}

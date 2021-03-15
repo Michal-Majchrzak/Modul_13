@@ -1,0 +1,31 @@
+{% extends 'index.html' %}
+{% block header %}<title>Manage Inventory</title>{% endblock %}
+{% block content %}
+{% if inventory_items %}
+<table>
+    <thead>
+        <th>ID</th>
+        <th>Tytuł</th>
+        <th>Dostępność</th>
+        <th>Czytelnik</th>
+        <th></th>
+    </thead>
+{% for item in inventory_items %}
+<tr>
+    <td>{{ item.id }}</td>
+    <td>{{ item.book.title }}</td>
+    {% if item.reader %}
+        <td>Wypożyczona</td>
+        <td>{{ item.reader.name }} {{item.reader.lastname }}</td>
+    {% else %}
+        <td>Do wypożyczenia</td>
+        <td><a href="{{ url_for('inventory.render_assign_reader', item_id=item.id) }}">Przypisz</a></td>
+    {% endif %}
+    <td><a href="{{ url_for('inventory.delete_item_by_id', item_id=item.id) }}">Usuń</a></td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<p><i>Brak dodanych pozycji.</i></p>
+{% endif %}
+{% endblock %}

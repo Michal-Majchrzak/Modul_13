@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+{% block header %}<title>Manage Readers</title>{% endblock %}
+
+{% block content %}
+{% if form %}
+<form action="{{ url_for('readers.update_reader_to_db', reader_id=reader_id) }}" method="post">
+    {{ form.hidden_tag() }}
+        {% for field in form if field.widget.input_type != 'hidden' %}
+            {% if field.widget.input_type != 'submit' %}
+                {{ field.label }}
+            {% endif %}
+            {{ field }}
+        {% endfor %}
+</form>
+{% endif %}
+{% endblock %}
