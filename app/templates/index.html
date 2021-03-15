@@ -26,8 +26,8 @@
     </ul>
     <h4>Manage Inventory</h4>
     <ul>
-        <li>View items</li>
-        <li>Add item</li>
+        <li><a href="{{ url_for('inventory.render_inventory_list') }}">View items</a></li>
+        <li><a href="{{ url_for('inventory.render_add_inventory_form') }}">Add item</a></li>
     </ul>
 </div>
 <div class="content">
